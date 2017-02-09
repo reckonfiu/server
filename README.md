@@ -45,6 +45,8 @@
     $ docker -v
     ```
     
+    If no errors occured then we can build our server.
+    
 ## Setup:
 To set up our server with docker after all dependencies have been installed follow these steps:
  
