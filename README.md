@@ -1,6 +1,6 @@
 # ReckonFIU - Server 
 
-> Python server running on docker container, by running our server in a docker container we can easily change, upgrade and scale our server. In order to use docker, we install `docker-engine` and `docker-compose`. In case of Mac and Windows `docker-machine` must also be installed.   
+> Python server running on docker container, by running our server in a docker container we can easily change, upgrade and scale our server. In order to use docker, we install `docker-engine` and `docker-compose`. In case of Mac and Windows `docker-machine` with `virtualbox` must also be installed.   
 
 ## Requirements:
 
