@@ -53,6 +53,7 @@
     $ cd server
     $ docker-compose up    
     ```
+    
  In the browser go to `localhost:5000` "Hello World";   
     
     
