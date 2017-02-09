@@ -3,6 +3,7 @@
 > Python server running on docker container, by running our server in a docker container we can easily change, upgrade and scale our server. In order to use docker, we install `docker-engine` and `docker-compose`. In case of Mac and Windows `docker-machine` must also be installed.   
 
 ## Requirements:
+
 * **Python 2.7.10**
     ```
     Linux run command:
@@ -12,6 +13,7 @@
     Mac OS 
     Download from https://www.python.org/downloads/release/python-2711/
     ```
+    
 * **Docker 1.12.6**
     ```
     Linux:
@@ -21,10 +23,12 @@
     Mac OS:
     Follow these steps https://docs.docker.com/docker-for-mac/
     ```
+    
 * **Docker-compose 1.10.0** 
     ```
     Follow these steps: https://docs.docker.com/compose/install/
     ```
+    
 * **Docker-machine (Windows/Mac users only)** For docker-machine to run we also need virtualbox. 
     ```
     To install docker-machine follow these steps: https://docs.docker.com/machine/install-machine/
