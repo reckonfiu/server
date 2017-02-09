@@ -41,8 +41,8 @@
 * **Important Note**
     To check if docker, docker-compose and python are installed run these commands
     ```
-    $ sudo docker-compose -v
-    $ sudo docker -v
+    $ docker-compose -v
+    $ docker -v
     ```
 ## Setup:
  To set up our server with docker after all dependencies have been installed follow these steps:
