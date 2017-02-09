@@ -50,10 +50,9 @@
     ```
     $ git clone https://github.com/reckonfiu/server.git
     $ cd server
-    $ sudo docker-compose up
-    
+    $ sudo docker-compose up    
     ```
-* **Mac/Windows**
+ * **Mac/Windows**
     ``` 
     $ git clone https://github.com/reckonfiu/server.git
     $ cd server
