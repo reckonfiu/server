@@ -2,7 +2,7 @@
 
 > Python server running on docker container, by running our server in a docker container we can easily change, upgrade and scale our server. In order to use docker, we install `docker-engine` and `docker-compose`. In case of Mac and Windows `docker-machine` with `virtualbox` must also be installed.   
 
-## Requirements:
+## Requirements
 
 * **Python 2.7.10** (https://www.python.org/)
     ```
@@ -47,7 +47,7 @@
     
     If no errors occured then we can build our server.
     
-## Setup:
+## Setup
 To set up our server with docker after all dependencies have been installed follow these steps:
  
 * **All platforms** 
@@ -64,5 +64,5 @@ To set up our server with docker after all dependencies have been installed foll
     
  In the browser go to `localhost:5000` "Hello World";   
     
-## Technology Stack
+## Server Technology Stack
 * **Flask** http://flask.pocoo.org/
