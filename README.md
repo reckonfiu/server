@@ -5,6 +5,7 @@
 ## Requirements:
 * **Python 2.7.10 **
     ```
+    
     Linux run command:
     $ sudo apt-get install python
     Windows:
@@ -14,6 +15,7 @@
     ```
 * **Docker 1.12.6 **
     ```
+    
     Linux:
     Follow these steps: https://docs.docker.com/engine/installation/linux/
     Windows:
@@ -55,6 +57,7 @@
     ```
 * **Mac/Windows**
     ```
+    
     $ git clone https://github.com/reckonfiu/server.git
     $ cd server
     $ docker-compose iup
