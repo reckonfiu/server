@@ -45,16 +45,16 @@
     $ docker -v
     ```
 ## Setup:
- To set up our server with docker after all dependencies have been installed follow these steps:
+To set up our server with docker after all dependencies have been installed follow these steps:
  
- * **All platforms** 
+* **All platforms** 
     ```
     $ git clone https://github.com/reckonfiu/server.git
     $ cd server
     $ docker-compose up
     ```
     
- * **Note:** For Linux you might have to do
+* **Note:** For Linux you might have to do
     ```
     $ sudo docker-compose up
     ```
