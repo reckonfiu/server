@@ -6,7 +6,7 @@
 
 * **Python 2.7.10**
     ```
-    Linux run command:
+    For Linux run command:
     $ sudo apt-get install python
     Windows:
     Download from https://www.python.org/downloads/release/python-2711/
@@ -16,12 +16,9 @@
     
 * **Docker 1.12.6**
     ```
-    Linux:
-    Follow these steps: https://docs.docker.com/engine/installation/linux/
-    Windows:
-    Follow these steps: https://docs.docker.com/docker-for-windows/
-    Mac OS:
-    Follow these steps https://docs.docker.com/docker-for-mac/
+    1. Linux: https://docs.docker.com/engine/installation/linux/
+    2. Windows: https://docs.docker.com/docker-for-windows/
+    3. Mac OS: https://docs.docker.com/docker-for-mac/
     ```
     
 * **Docker-compose 1.10.0** 
@@ -31,8 +28,8 @@
     
 * **Docker-machine (Windows/Mac users only)** For docker-machine to run we also need virtualbox. 
     ```
-    To install docker-machine follow these steps: https://docs.docker.com/machine/install-machine/
-    To install virtual-box follow these steps: https://www.virtualbox.org/wiki/Downloads
+    docker-machine: https://docs.docker.com/machine/install-machine/
+    virtualbox: https://www.virtualbox.org/wiki/Downloads
     ```
     After installing docker-machine create a docker virtual machine
     ```
