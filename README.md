@@ -8,9 +8,7 @@
     ```
     For Linux run command:
         $ sudo apt-get install python
-    Windows:
-        Download from https://www.python.org/downloads/release/python-2711/
-    Mac OS 
+    Windows/Mac OS:
         Download from https://www.python.org/downloads/release/python-2711/
     ```
     
