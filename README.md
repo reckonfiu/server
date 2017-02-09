@@ -44,6 +44,7 @@
     $ docker-compose -v
     $ docker -v
     ```
+    
 ## Setup:
 To set up our server with docker after all dependencies have been installed follow these steps:
  
