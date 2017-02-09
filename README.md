@@ -43,6 +43,7 @@
     ```
     $ docker-compose -v
     $ docker -v
+    $ python --version
     ```
     
     If no errors occured then we can build our server.
