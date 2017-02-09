@@ -3,9 +3,8 @@
 > Python server running on docker container, by running our server in a docker container we can easily change, upgrade and scale our server. In order to use docker, we install `docker-engine` and `docker-compose`. In case of Mac and Windows `docker-machine` must also be installed.   
 
 ## Requirements:
-* **Python 2.7.10 **
+* **Python 2.7.10**
     ```
-    
     Linux run command:
     $ sudo apt-get install python
     Windows:
@@ -13,9 +12,8 @@
     Mac OS 
     Download from https://www.python.org/downloads/release/python-2711/
     ```
-* **Docker 1.12.6 **
+* **Docker 1.12.6**
     ```
-    
     Linux:
     Follow these steps: https://docs.docker.com/engine/installation/linux/
     Windows:
@@ -56,12 +54,11 @@
     
     ```
 * **Mac/Windows**
-    ```
-    
+    ``` 
     $ git clone https://github.com/reckonfiu/server.git
     $ cd server
     $ docker-compose iup
     ```
- Go to the browser and type localhost:5000. Server should be up and running   
+ In the browser go to `localhost:5000` "Hello World";   
     
     
