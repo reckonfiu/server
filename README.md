@@ -52,7 +52,10 @@
     $ git clone https://github.com/reckonfiu/server.git
     $ cd server
     $ docker-compose up
-    Note: for linux you might have to do 
+    ```
+    
+ * **Note: for linux you might have to do**
+    ```
     $ sudo docker-compose up
     ```
     
