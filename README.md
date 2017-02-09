@@ -4,7 +4,7 @@
 
 ## Requirements:
 
-* **Python 2.7.10**
+* **Python 2.7.10** (https://www.python.org/)
     ```
     For Linux run command:
         $ sudo apt-get install python
@@ -14,7 +14,7 @@
         Download from https://www.python.org/downloads/release/python-2711/
     ```
     
-* **Docker 1.12.6**
+* **Docker 1.12.6** (https://docs.docker.com/)
     ```
     1. Linux: https://docs.docker.com/engine/installation/linux/
     2. Windows: https://docs.docker.com/docker-for-windows/
