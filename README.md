@@ -62,7 +62,7 @@ To set up our server with docker after all dependencies have been installed foll
     $ sudo docker-compose up
     ```
     
- In the browser go to `localhost:5000` "Hello World";   
+ In the browser go to `localhost:5000`   
     
 ## Server Technology Stack
 * **Flask** http://flask.pocoo.org/
