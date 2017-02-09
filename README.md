@@ -47,11 +47,13 @@
 ## Setup:
  To set up our server with docker after all dependencies have been installed follow these steps:
  
- * **All platforms** Note: for linux you might have to do `sudo docker-compose up`
+ * **All platforms** 
     ```
     $ git clone https://github.com/reckonfiu/server.git
     $ cd server
-    $ docker-compose up    
+    $ docker-compose up
+    Note: for linux you might have to do 
+    $ sudo docker-compose up
     ```
     
  In the browser go to `localhost:5000` "Hello World";   
