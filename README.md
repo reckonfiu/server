@@ -56,6 +56,7 @@
     $ cd server
     $ sudo docker-compose up    
     ```
+    
  * **Mac/Windows**
     ``` 
     $ git clone https://github.com/reckonfiu/server.git
