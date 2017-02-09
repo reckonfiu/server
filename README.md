@@ -54,7 +54,7 @@
     $ docker-compose up
     ```
     
- * **Note: for linux you might have to do**
+ * **Note:** For Linux you might have to do
     ```
     $ sudo docker-compose up
     ```
