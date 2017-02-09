@@ -7,11 +7,11 @@
 * **Python 2.7.10**
     ```
     For Linux run command:
-    $ sudo apt-get install python
+        $ sudo apt-get install python
     Windows:
-    Download from https://www.python.org/downloads/release/python-2711/
+        Download from https://www.python.org/downloads/release/python-2711/
     Mac OS 
-    Download from https://www.python.org/downloads/release/python-2711/
+        Download from https://www.python.org/downloads/release/python-2711/
     ```
     
 * **Docker 1.12.6**
