@@ -1,8 +1,20 @@
 version: "2"
+volumes:
+    data:
+        
 services:
+    db:
+        image: mongo:3.0.14
+        volumes:
+            - ./data/db:/data/db
+        ports:
+            - "27017:27017"    
     api:
         build: .
         ports:
             - "5000:5000"
         volumes:
-            - .:/reckonfiu    
+            - .:/reckonfiu
+        links:
+            - db
+   
