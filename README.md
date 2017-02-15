@@ -1,4 +1,4 @@
-# ReckonFIU - Server 
+# ReconFIU - Server 
 
 > Python server running on docker container, by running our server in a docker container we can easily change, upgrade and scale our server. In order to use docker, we install `docker-engine` and `docker-compose`. In case of Mac and Windows `docker-machine` with `virtualbox` must also be installed.   
 
@@ -8,9 +8,7 @@
     ```
     For Linux run command:
         $ sudo apt-get install python
-    Windows:
-        Download from https://www.python.org/downloads/release/python-2711/
-    Mac OS 
+    Windows/Mac OS:
         Download from https://www.python.org/downloads/release/python-2711/
     ```
     
@@ -43,6 +41,7 @@
     ```
     $ docker-compose -v
     $ docker -v
+    $ python --version
     ```
     
     If no errors occured then we can build our server.
@@ -62,7 +61,7 @@ To set up our server with docker after all dependencies have been installed foll
     $ sudo docker-compose up
     ```
     
- In the browser go to `localhost:5000` "Hello World";   
+ In the browser go to `localhost:5000`   
     
 ## Server Technology Stack
 * **Flask** http://flask.pocoo.org/

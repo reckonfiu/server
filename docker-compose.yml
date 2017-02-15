@@ -17,4 +17,4 @@ services:
             - .:/reckonfiu
         links:
             - db
-   
+
