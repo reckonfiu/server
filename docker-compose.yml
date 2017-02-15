@@ -1,7 +1,4 @@
 version: "2"
-volumes:
-    data:
-        
 services:
     db:
         image: mongo:3.0.14
