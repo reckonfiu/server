@@ -6,7 +6,7 @@ services:
     db:
         image: mongo:3.0.14
         volumes:
-            - ./data/db:/data/db
+            - /data/db:/data/db
         ports:
             - "27017:27017"    
     api:
