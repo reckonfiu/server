@@ -67,3 +67,4 @@ To set up our server with docker after all dependencies have been installed foll
     
 ## Server Technology Stack
 * **Flask** http://flask.pocoo.org/
+* **Pymongo**  https://api.mongodb.com/python/current/
