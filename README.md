@@ -16,7 +16,9 @@
     ```
     1. Linux: https://docs.docker.com/engine/installation/linux/
     2. Windows: https://docs.docker.com/docker-for-windows/
+        * For older versions of Windows download Docker-Toolbox version 1.12.6 from https://github.com/docker/toolbox/releases
     3. Mac OS: https://docs.docker.com/docker-for-mac/
+        * For older versions of Mac download Docker-Toolbox version 1.12.6 from https://github.com/docker/toolbox/releases
     ```
     
 * **Docker-compose 1.10.0** 
