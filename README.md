@@ -70,8 +70,8 @@ To set up our server with docker after all dependencies have been installed foll
 * **Pymongo**  https://api.mongodb.com/python/current/
 
 ## TODO - Things we need to implement:
-* **search by
-* **store comments
-* **authenticate user
-* **add user
-* **delete user
+* **search by**
+* **store comments**
+* **authenticate user**
+* **add user**
+* **delete user**
