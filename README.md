@@ -73,18 +73,22 @@ To set up our server with docker after all dependencies have been installed foll
 * **search by**
 
     ```
-    comparable function for terms (Fall, Spring, Summer)
+    Comparable function for terms (Fall, Spring, Summer)
     Return sorted by:
         course: matching courses from top to bottom (mongo does this by default)
         term: if available search by term
         professor: if available search by professor 
     ``` 
 * **store comments**
+
+    ```
+    Store all comments related to a class in an Array under the class.
+    ```
 * **authenticate user**
 * **add user**
 * **delete user**
 * **token barrier**
 
     ```
-    users should not be allowed to use the API without being logged in.
+    Users should not be allowed to use the API without being logged in.
     ```
