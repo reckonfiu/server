@@ -16,10 +16,10 @@ def hello():
 
 @app.route('/getall')
 def allRecords():
-    cursor = db.courses.find()
+    cursor = db.courses.find().limit(100)
     results = []
     for document in cursor:
-        results.append(document['course'])
+        results.append({'course': document['course'], 'data': document['data'], 'instructor': document['instructor'] })
     return jsonify({ 'count': cursor.count() , 'results': results})
 
 if __name__ == "__main__":
