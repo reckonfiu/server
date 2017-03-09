@@ -72,8 +72,8 @@ To set up our server with docker after all dependencies have been installed foll
 ## TODO - Things we need to implement:
 * **search by**
 ```
-    *comparable function for terms (Fall, Spring, Summer)
-    *Return sorted by:
+    comparable function for terms (Fall, Spring, Summer)
+    Return sorted by:
         course: matching courses from top to bottom (mongo does this by default)
         term: if available search by term
         professor: if available search by professor 
