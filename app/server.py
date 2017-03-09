@@ -22,6 +22,13 @@ def allRecords():
         results.append(document['course'])
     return jsonify({ 'count': cursor.count() , 'results': results})
 
+# Things we need to implement
+# search by
+# store comments
+# authenticate user
+# add user
+# delete user
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
     
