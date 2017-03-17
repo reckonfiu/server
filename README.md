@@ -76,7 +76,7 @@ To set up our server with docker after all dependencies have been installed foll
         term: if available search by term
         professor: if available search by professor 
     
-    Api requet route: the object passed to the query parameter must be a JSON string
+    Api request route: the object passed to the query parameter must be a JSON string
     ```
     POST /api/searchBy
     headers: 
