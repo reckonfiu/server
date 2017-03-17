@@ -84,9 +84,10 @@ To set up our server with docker after all dependencies have been installed foll
     If neither course, term or prof fields are passed then the first 100 found records are returned  
     Response:
     ```
-    status: 200
-    data : [{ professor : example }]
-    records: 1
+    "status": 200,
+    "data" : [{ professor : example }],
+    "records": 1,
+    "message": "Success",
     ```
     TODO:
     Create comparable function for terms (Fall, Spring, Summer)
