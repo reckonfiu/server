@@ -70,7 +70,7 @@ To set up our server with docker after all dependencies have been installed foll
 * **Pymongo**  https://api.mongodb.com/python/current/
 
 ## TODO - Things we need to implement:
-* **search by**
+* **Search by**
     Comparable function for terms (Fall, Spring, Summer)
     Returns sorted by:
         course: matching courses from top to bottom (mongo does this by default)
