@@ -66,12 +66,11 @@ To set up our server with docker after all dependencies have been installed foll
  In the browser go to `localhost:5000`   
     
 ## Server Technology Stack
-* **Flask** http://flask.pocoo.org/
-* **Pymongo**  https://api.mongodb.com/python/current/
+* **Flask** http://flask.pocoo.org/ 
+* **Pymongo**  https://api.mongodb.com/python/current/ 
 
 ## TODO - Things we need to implement:
 * **Search by**
-    Comparable function for terms (Fall, Spring, Summer)
     Returns sorted by:
         course: matching courses from top to bottom (mongo does this by default)
         term: if available search by term
@@ -92,7 +91,8 @@ To set up our server with docker after all dependencies have been installed foll
     data : [{ professor : example }]
     records: 1
     ```
-    
+    TODO:
+    Create comparable function for terms (Fall, Spring, Summer)
 * **store comments**
 
     ```
