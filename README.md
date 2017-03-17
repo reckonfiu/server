@@ -74,11 +74,26 @@ To set up our server with docker after all dependencies have been installed foll
 
     ```
     Comparable function for terms (Fall, Spring, Summer)
-    Return sorted by:
+    Returns sorted by:
         course: matching courses from top to bottom (mongo does this by default)
         term: if available search by term
         professor: if available search by professor 
-    ``` 
+    
+    **Api requet route** the object passed to the `query` parameter must be a JSON string
+    POST `/api/searchBy`
+    headers: 
+        `content-type`: `application/json`
+    body:
+        `query`: { `course`: `course_name`, `term`: `term_number`, `prof`: `professor_name` }
+        
+    **If neither `course`, `term` or `prof` fields are passed then the first 100 found records are returned**
+    
+    **Response**
+    `status`: `200`
+    `data` : [{ `professor`: `example` }]
+    `records`: `1`
+    ```
+    
 * **store comments**
 
     ```
