@@ -1,27 +1,45 @@
-import os, utils, re
+import os, utils, re, hashlib, time
 from flask import Flask, json, request, session
 from pymongo import MongoClient
 
 app = Flask(__name__)
 
 client = MongoClient(
-    '127.0.0.1',
+    'db',
     27017)
 
+# databases
 db = client.fiudb
+db_users = client.userdb
 
+# Globals
+PASS_MIN_LEN = 8
+PASS_MAX_LEN = 32
 
+ISSUER = "reconFIU_server"
+EXP_TIME = 86400 # 1 day
+# Secret key for JWT
+SECRET_KEY = "RECON_FIU_CEN_4010"  # TODO: Should be Randomized and sent to Client Browser
+
+# creates general response 
+def response(status_code, message, data=None):
+    return json.jsonify(
+        status = status_code,
+        message = message,
+        data = data
+    )
+
+# creates response with data
 def autoResponse(function):
     try:
         result = function()
     except (BaseException, RuntimeError) as e:
         response = json.jsonify(
             status=400,
-            message=e.message,
+            message=str(e),
             data=dict(),
             records=0
         )
-        # setattr(response, "status_code", 400)
         client.close()
         return response
     return json.jsonify(
@@ -31,251 +49,47 @@ def autoResponse(function):
         records=len(result)
     )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import hashlib  # Hashing module
-import time # Time module
-import jwt  # JSON Web Token module
-
-# Globals
-db_users = client.userdb
-PASS_MIN_LEN = 8
-PASS_MAX_LEN = 32
-
-ISSUER = "reconFIU_server"
-EXP_TIME = 86400 # 1 day
-# Secret key for JWT
-SECRET_KEY = "RECON_FIU_CEN_4010"  # TODO: Should be Randomized and sent to Client Browser
-
-
-def response(status_code, message, data=None):
-    return json.jsonify(
-        status = status_code,
-        message = message,
-        data = data
-    )
+@app.route("/")
+def initApp():
+    return "Welcome to ReconFIU"
+
+@app.route("/api/getall")
+@app.route("/api/getall/<int:limit>")
+def allRecords(limit=1000):
+    cursor = db.courses.find().limit(limit)
+    return autoResponse(lambda: utils.toArray(cursor) )
+
+# performs a search by depending on what criteri is passed
+# if no criteria is passed the returns first 1000 records
+@app.route("/api/searchBy", methods=["POST"])
+def searchBy():
+    params = request.get_json(force=True).get('query')
+    if params is None:
+        return allRecords()
+    match = {}
+    if "course" in params:
+        match["course.number"] = params.get("course") 
+    if "term" in params:
+        match["term.term"] = params.get("term")
+    if "prof" in params:
+        match["instructor.name"] = { "$in" : list(map(lambda x : re.compile(pattern=x, flags=re.IGNORECASE), params.get("prof").split() ))  }
+    
+    pipeline_query[0]["$match"] = { "$and": [match] }
+    cursor = db.courses.aggregate(pipeline_query)
+    return autoResponse(lambda: utils.toArray(cursor))
+
+pipeline_query = [
+  { "$match": {} },
+  { "$limit": 75000 },
+  { "$sort": { 'date': 1, 'instructor.name': 1 } }
+]
 
 
 # Show all documents in userdb
 @app.route("/api/getallusers")
 @app.route("/api/getallusers/<int:limit>")
 def allUsers(limit = 100):
-    cursor = db.courses.find().limit(limit)
+    cursor = db_users.courses.find().limit(limit)
     return autoResponse(lambda: utils.toArray(cursor))
 
 
@@ -419,7 +233,6 @@ def is_valid_token(token, username):
         return False
     else:
         return True
-
 
 if __name__ == "__main__":
     # Secret key for sessions
