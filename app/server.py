@@ -63,7 +63,7 @@ def searchBy():
 pipeline_query = [
   { "$match": {} },
   { "$limit": 75000 },
-  { "$sort": { 'term.term': -1, 'instructor.name': -1 } }
+  { "$sort": { 'date': 1, 'instructor.name': 1 } }
 ]
 
 # Things we need to implement
