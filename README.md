@@ -66,5 +66,41 @@ To set up our server with docker after all dependencies have been installed foll
  In the browser go to `localhost:5000`   
     
 ## Server Technology Stack
-* **Flask** http://flask.pocoo.org/
-* **Pymongo**  https://api.mongodb.com/python/current/
+* **Flask** http://flask.pocoo.org/ 
+* **Pymongo**  https://api.mongodb.com/python/current/ 
+
+## TODO - Things to implement:
+* **Search by**
+    Returns courses that matched the specific course, term or professor passed in the body of the request. The return data is returned sorted by the fields that are passed. First is course then term and professor. 
+    
+    Api request route: the object passed to the query parameter must be a JSON string
+    ```
+    POST /api/searchBy
+    headers: 
+        content-type: application/json
+    body:
+        { query: { course: course_name, term: term_number, prof: professor_name } }
+    ```    
+    If neither course, term or prof fields are passed then the first 100 found records are returned  
+    Response:
+    ```
+    "status": 200,
+    "data" : [{ professor : example }],
+    "records": 1,
+    "message": "Success",
+    ```
+    TODO:
+    Create comparable function for terms (Fall, Spring, Summer)
+* **store comments**
+
+    ```
+    Store all comments related to a class in an Array under the class.
+    ```
+* **authenticate user**
+* **add user**
+* **delete user**
+* **token barrier**
+
+    ```
+    Users should not be allowed to use the API without being logged in.
+    ```
