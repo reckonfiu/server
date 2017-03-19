@@ -8,10 +8,11 @@ client = MongoClient(
     'db',
     27017)
 
+# databases
 db = client.fiudb
+db_users = client.userdb
 
 # Globals
-db_users = client.userdb
 PASS_MIN_LEN = 8
 PASS_MAX_LEN = 32
 
@@ -20,7 +21,7 @@ EXP_TIME = 86400 # 1 day
 # Secret key for JWT
 SECRET_KEY = "RECON_FIU_CEN_4010"  # TODO: Should be Randomized and sent to Client Browser
 
-# creates general auto response 
+# creates general response 
 def response(status_code, message, data=None):
     return json.jsonify(
         status = status_code,
@@ -28,7 +29,7 @@ def response(status_code, message, data=None):
         data = data
     )
 
-# creates response for with data
+# creates response with data
 def autoResponse(function):
     try:
         result = function()
@@ -88,7 +89,7 @@ pipeline_query = [
 @app.route("/api/getallusers")
 @app.route("/api/getallusers/<int:limit>")
 def allUsers(limit = 100):
-    cursor = db.courses.find().limit(limit)
+    cursor = db_users.courses.find().limit(limit)
     return autoResponse(lambda: utils.toArray(cursor))
 
 
