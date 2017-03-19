@@ -34,7 +34,7 @@ def autoResponse(function):
     except (BaseException, RuntimeError) as e:
         response = json.jsonify(
             status=400,
-            message=e.message,
+            message=str(e),
             data=dict(),
             records=0
         )
@@ -66,11 +66,11 @@ def searchBy():
     if params is None:
         return allRecords()
     match = {}
-    if params.has_key("course"):
+    if "course" in params:
         match["course.number"] = params.get("course") 
-    if params.has_key("term"):
+    if "term" in params:
         match["term.term"] = params.get("term")
-    if params.has_key("prof"):
+    if "prof" in params:
         match["instructor.name"] = { "$in" :  map(lambda x : re.compile(pattern=x, flags=re.IGNORECASE), params.get("prof").split() )  }
     
     pipeline_query[0]["$match"] = { "$and": [match] }
