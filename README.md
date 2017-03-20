@@ -100,9 +100,9 @@ To set up our server with docker after all dependencies have been installed foll
 * **add user**
 * **delete user**
 * **token barrier**
+
+     Users should not be allowed to use the API without being logged in.
 * **Implement ORM framework library**
 
      In order to keep the data embedded model consistent let's implemented ORM 
-    ```
-    Users should not be allowed to use the API without being logged in.
-    ```
+
