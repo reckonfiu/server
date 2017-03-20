@@ -68,6 +68,7 @@ To set up our server with docker after all dependencies have been installed foll
 ## Server Technology Stack
 * **Flask** http://flask.pocoo.org/ 
 * **Pymongo**  https://api.mongodb.com/python/current/ 
+* **PyJWT** https://github.com/jpadilla/pyjwt
 
 ## TODO - Things to implement:
 * **Search by**
@@ -105,4 +106,5 @@ To set up our server with docker after all dependencies have been installed foll
 * **Implement ORM framework library**
 
      In order to keep the data embedded model consistent let's implemented ORM 
-
+     **Humongolus** https://github.com/entone/Humongolus
+    
