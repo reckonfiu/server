@@ -4,7 +4,7 @@
 
 ## Requirements
 
-* **Python 2.7.10** (https://www.python.org/)
+* **Python 3.4* (https://www.python.org/)
     ```
     For Linux run command:
         $ sudo apt-get install python
