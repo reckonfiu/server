@@ -1,4 +1,4 @@
-import os, utils, re, hashlib, time
+import os, utils, re, hashlib, time, jwt
 from flask import Flask, json, request, session
 from pymongo import MongoClient
 
