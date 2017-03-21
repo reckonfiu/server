@@ -1,4 +1,4 @@
-import os, utils, re, hashlib, time
+import os, utils, re, hashlib, time, jwt
 from flask import Flask, json, request, session
 from pymongo import MongoClient
 
@@ -89,7 +89,7 @@ pipeline_query = [
 @app.route("/api/getallusers")
 @app.route("/api/getallusers/<int:limit>")
 def allUsers(limit = 100):
-    cursor = db_users.courses.find().limit(limit)
+    cursor = db_users.users.find().limit(limit)
     return autoResponse(lambda: utils.toArray(cursor))
 
 
