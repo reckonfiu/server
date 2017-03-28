@@ -67,10 +67,11 @@ To set up our server with docker after all dependencies have been installed foll
     
 ## Server Technology Stack
 * **Flask** http://flask.pocoo.org/ 
+    **flask_cors** https://flask-cors.readthedocs.io/en/latest/
 * **Pymongo**  https://api.mongodb.com/python/current/ 
 * **PyJWT** https://github.com/jpadilla/pyjwt
 
-## TODO - Things to implement:
+## API
 * **Search by**
     Returns courses that matched the specific course, term or professor passed in the body of the request. The return data is returned sorted by the fields that are passed. First is course then term and professor. 
     
@@ -79,8 +80,8 @@ To set up our server with docker after all dependencies have been installed foll
     POST /api/searchBy
     headers: 
         content-type: application/json
-    body:
-        { query: { course: course_name, term: term_number, prof: professor_name } }
+    body: { query: { course: course_name, term: term_number, prof: firstname<space>lastname  } }
+        where course_name and term_number don't contain any white space
     ```    
     If neither course, term or prof fields are passed then the first 100 found records are returned  
     Response:
@@ -92,16 +93,34 @@ To set up our server with docker after all dependencies have been installed foll
     ```
     TODO:
     Create comparable function for terms (Fall, Spring, Summer)
-* **store comments**
 
-    ```
-    Store all comments related to a class in an Array under the class.
-    ```
+* **Store comments** - Pending
+
 * **authenticate user**
+    ```
+    POST /api/login
+    headers:  content-type: application/json
+    body: { user: {username: "", password: "" } }
+    ```
+    
 * **add user**
-* **delete user**
-* **token barrier**
+    ```
+    POST /api/adduser
+    headers:  content-type: application/json
+    body: { user: {username: "", password: "" } }
+    ```
+    
+* **find user**
+    ```
+    POST /api/finduser
+    headers:  content-type: application/json
+    body: { user: {username: "", password: "" } }
+    ```
+    
+* **delete user**  - Pending
 
+
+## TODO:
      Users should not be allowed to use the API without being logged in.
 * **Implement ORM framework library**
 
