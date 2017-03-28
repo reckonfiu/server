@@ -91,11 +91,7 @@ To set up our server with docker after all dependencies have been installed foll
     "records": 1,
     "message": "Success",
     ```
-    TODO:
-    Create comparable function for terms (Fall, Spring, Summer)
-
-* **Store comments** - Pending
-
+    
 * **authenticate user**
     ```
     POST /api/login
@@ -117,7 +113,9 @@ To set up our server with docker after all dependencies have been installed foll
     body: { user: {username: "", password: "" } }
     ```
     
-* **delete user**  - Pending
+* **delete user**    - Pending   
+* **Store comments** - Pending
+
 
 
 ## TODO:
