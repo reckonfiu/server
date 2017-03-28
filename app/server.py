@@ -1,8 +1,12 @@
 import os, utils, re, hashlib, time, jwt
 from flask import Flask, json, request, session
 from pymongo import MongoClient
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
+
 
 client = MongoClient(
     'db',
@@ -61,7 +65,7 @@ def allRecords(limit=1000):
 
 # performs a search by depending on what criteri is passed
 # if no criteria is passed the returns first 1000 records
-@app.route("/api/searchBy", methods=["POST"])
+@app.route("/api/searchby", methods=["POST"])
 def searchBy():
     params = request.get_json(force=True).get('query')
     if params is None:
