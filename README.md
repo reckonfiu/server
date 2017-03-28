@@ -67,7 +67,7 @@ To set up our server with docker after all dependencies have been installed foll
     
 ## Server Technology Stack
 * **Flask** http://flask.pocoo.org/ 
-    **flask_cors** https://flask-cors.readthedocs.io/en/latest/
+    * **flask_cors** https://flask-cors.readthedocs.io/en/latest/
 * **Pymongo**  https://api.mongodb.com/python/current/ 
 * **PyJWT** https://github.com/jpadilla/pyjwt
 
