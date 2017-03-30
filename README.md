@@ -83,7 +83,8 @@ To set up our server with docker after all dependencies have been installed foll
     body: { query: { course: course_name, term: term_number, prof: firstname<space>lastname  } }
         where course_name and term_number don't contain any white space
         
-    Sample query using HTML5 fetch API
+    Sample query using HTML5 fetch API:
+    
     fetch('http://localhost:5000/api/searchby', {
             method: 'POST',
             headers: new Headers({ 'Content-Type': 'application/json' }),
