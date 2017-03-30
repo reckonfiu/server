@@ -91,7 +91,8 @@ To set up our server with docker after all dependencies have been installed foll
         mode: 'cors',
         body: JSON.stringify({})
     }).then(resp => {
-        resp.json().then(data => {																								        // handle the data here				
+        resp.json().then(data => {						
+            // handle the data here				
             console.log(data);
         })
     })
