@@ -82,6 +82,18 @@ To set up our server with docker after all dependencies have been installed foll
         content-type: application/json
     body: { query: { course: course_name, term: term_number, prof: firstname<space>lastname  } }
         where course_name and term_number don't contain any white space
+        
+    Sample query using HTML5 fetch API
+    fetch('http://localhost:5000/api/searchby', {
+            method: 'POST',
+            headers: new Headers({ 'Content-Type': 'application/json' }),
+            mode: 'cors',
+            body: JSON.stringify({})
+          }).then(resp => {
+            resp.json().then(data => {																								      // handle the data here				
+              console.log(data);
+            })
+          })
     ```    
     If neither course, term or prof fields are passed then the first 100 found records are returned  
     Response:
