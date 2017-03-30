@@ -86,15 +86,15 @@ To set up our server with docker after all dependencies have been installed foll
     Sample query using HTML5 fetch API:
     
     fetch('http://localhost:5000/api/searchby', {
-            method: 'POST',
-            headers: new Headers({ 'Content-Type': 'application/json' }),
-            mode: 'cors',
-            body: JSON.stringify({})
-          }).then(resp => {
-            resp.json().then(data => {																								      // handle the data here				
-              console.log(data);
-            })
-          })
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        mode: 'cors',
+        body: JSON.stringify({})
+    }).then(resp => {
+        resp.json().then(data => {																								        // handle the data here				
+            console.log(data);
+        })
+    })
     ```    
     If neither course, term or prof fields are passed then the first 100 found records are returned  
     Response:
