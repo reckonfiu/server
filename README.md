@@ -95,6 +95,19 @@ To set up our server with docker after all dependencies have been installed foll
             console.log(data);
         })
     })
+    
+    Using professor and course:
+    
+    fetch('http://localhost:5000/api/searchby', {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        mode: 'cors',
+        body: JSON.stringify({ query: { course: "cop2210", prof: "masoud" } })
+    }).then(resp => {
+        resp.json().then(data => {
+            console.log(data);
+        })
+    })
     ```    
     If neither course, term or prof fields are passed then the first 100 found records are returned  
     Response:
