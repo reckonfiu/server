@@ -1,8 +1,12 @@
 import os, utils, re, hashlib, time, jwt
 from flask import Flask, json, request, session
 from pymongo import MongoClient
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
+
 
 client = MongoClient(
     'db',
@@ -61,17 +65,17 @@ def allRecords(limit=1000):
 
 # performs a search by depending on what criteri is passed
 # if no criteria is passed the returns first 1000 records
-@app.route("/api/searchBy", methods=["POST"])
+@app.route("/api/searchby", methods=["POST"])
 def searchBy():
     params = request.get_json(force=True).get('query')
     if params is None:
         return allRecords()
     match = {}
-    if "course" in params:
-        match["course.number"] = params.get("course") 
-    if "term" in params:
+    if "course" in params and params.get("course"):
+        match["course.number"] = { "$regex" : re.compile(pattern=params.get("course"), flags=re.IGNORECASE) } 
+    if "term" in params and params.get("term"):
         match["term.term"] = params.get("term")
-    if "prof" in params:
+    if "prof" in params and params.get("prof"):
         match["instructor.name"] = { "$in" : list(map(lambda x : re.compile(pattern=x, flags=re.IGNORECASE), params.get("prof").split() ))  }
     
     pipeline_query[0]["$match"] = { "$and": [match] }
@@ -80,9 +84,9 @@ def searchBy():
 
 pipeline_query = [
   { "$match": {} },
-  { "$limit": 75000 },
-  { "$sort": { 'date': 1, 'instructor.name': 1 } }
-]
+  { "$limit": 10000 },
+  { "$sort": { "date": 1, "instructor.name": 1 } }
+] 
 
 
 # Show all documents in userdb

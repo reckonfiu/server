@@ -1,4 +1,4 @@
 flask
 pymongo
 pyjwt
-homongolus
+flask_cors
