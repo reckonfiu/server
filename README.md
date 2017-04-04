@@ -139,7 +139,12 @@ To set up our server with docker after all dependencies have been installed foll
     body: { user: {username: "", password: "" } }
     ```
     
-* **delete user**    - Pending   
+* **delete user**
+    ```
+    POST /api/deleteuser
+    headers:  content-type: application/json
+    body: { user: {username: ""} }
+    ```
 * **Store comments** - Pending
 
 
