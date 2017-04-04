@@ -108,7 +108,7 @@ def find_user():
     if user is None:
         return response(404, "Error: " + params.get("username") + " not found")
     else:
-        return response(200, "User found", {'username': user['username'], 'token': user['token']})
+        return response(200, "User found", {'username': user['username']})
 
 
 # Create a user document in userdb
@@ -146,12 +146,10 @@ def delete_user():
         return response(400, "Error: Bad Request")
     elif params.get("username") is None:
         return response(404, "Error: Missing username")
-    user = db_users.users.find_one({'username': params.get("username")})
+    user = db_users.users.remove({'username': params.get("username")})
     if user:
-        return response(500, "Deleting: " + params.get("username"))
-        db_users.users.remove({'username': params.get("username"), 'password': ""})
-    else:
-        return response(409, "Error: " + params.get("username") + " has already been deleted")
+        return response(200, "Username: " + params.get("username") + " has been deleted.")
+    return response(409, "Error: " + params.get("username") + " has already been deleted")
 
 # Check if password is valid
 def is_valid_password(password):
