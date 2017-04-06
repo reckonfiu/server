@@ -149,7 +149,7 @@ To set up our server with docker after all dependencies have been installed foll
     ```
     POST /api/addcomment
     headers:  content-type: application/json
-    body: { comments: {username: "", body: "", id: ""} }
+    body: { comment: {username: "", body: "", id: ""} }
     ```
 
 
