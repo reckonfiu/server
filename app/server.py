@@ -2,6 +2,8 @@ import os, utils, re, hashlib, time, jwt
 from flask import Flask, json, request, session
 from pymongo import MongoClient
 from flask_cors import CORS
+from bson.objectid import ObjectId
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -72,7 +74,7 @@ def searchBy():
         return allRecords()
     match = {}
     if "course" in params and params.get("course"):
-        match["course.number"] = { "$regex" : re.compile(pattern=params.get("course"), flags=re.IGNORECASE) } 
+        match["course.number"] = { "$regex" : re.compile(pattern=params.get("course"), flags=re.IGNORECASE) }
     if "term" in params and params.get("term"):
         match["term.term"] = params.get("term")
     if "prof" in params and params.get("prof"):
@@ -162,7 +164,6 @@ def is_valid_password(password):
     else:
         return True, "Password OK"
 
-
 # Login user, authorization
 @app.route('/api/login', methods=["POST"])
 def login():
@@ -219,6 +220,24 @@ def logout():
     else:  # User not found
         return response(404, "Error: " + username + " not found")
 
+# Adds a comment to the database
+# Needs username, comment body, and course id
+@app.route('/api/addcomment', methods=["POST"])
+def add_comment():
+    params = request.get_json(force=True).get('comment')
+    if params is None:
+        return response(400, "Error: Bad Request")
+    # If the comment is empty
+    elif params.get("body").strip("") is None:
+        return response(400, "Error: Cannot add empty comments")
+    elif params.get("username") is None:
+        username = "Anonymous"
+    else:
+        username = params.get("username")
+    db.courses.update({"_id": ObjectId(params.get("id"))},\
+        {"$push": {"comments": {"username": username,\
+        "body": params.get("body"), "time": datetime.now().strftime('%m-%d-%Y %H:%M:%S')}}})
+    return response(200, "Comment has been added")
 
 # Hash a given password using the sha1 hash function
 def hash_pass(password):
