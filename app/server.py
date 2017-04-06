@@ -221,7 +221,7 @@ def logout():
         return response(404, "Error: " + username + " not found")
 
 # Adds a comment to the database
-# Needs username and comment body
+# Needs username, comment body, and course id
 @app.route('/api/addcomment', methods=["POST"])
 def add_comment():
     params = request.get_json(force=True).get('comment')
