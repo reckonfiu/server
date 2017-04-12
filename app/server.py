@@ -108,7 +108,7 @@ def find_user():
     if user is None:
         return response(404, "Error: " + params.get("username") + " not found")
     else:
-        return response(200, "User found", {'username': user['username'], 'token': user['token']})
+        return response(200, "User found", {'username': user['username']})
 
 
 # Create a user document in userdb
@@ -140,7 +140,7 @@ def add_user():
         else:
             return response(400, "Error: Invalid Password: " + msg)
 
-
+  
 # Check if password is valid
 def is_valid_password(password):
     if len(password) < 8:
