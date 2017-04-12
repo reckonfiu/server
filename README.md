@@ -4,7 +4,7 @@
 
 ## Requirements
 
-* **Python 2.7.10** (https://www.python.org/)
+* **Python 3.4* (https://www.python.org/)
     ```
     For Linux run command:
         $ sudo apt-get install python
@@ -67,9 +67,11 @@ To set up our server with docker after all dependencies have been installed foll
     
 ## Server Technology Stack
 * **Flask** http://flask.pocoo.org/ 
+    * **flask_cors** https://flask-cors.readthedocs.io/en/latest/
 * **Pymongo**  https://api.mongodb.com/python/current/ 
+* **PyJWT** https://github.com/jpadilla/pyjwt
 
-## TODO - Things to implement:
+## API
 * **Search by**
     Returns courses that matched the specific course, term or professor passed in the body of the request. The return data is returned sorted by the fields that are passed. First is course then term and professor. 
     
@@ -78,8 +80,34 @@ To set up our server with docker after all dependencies have been installed foll
     POST /api/searchBy
     headers: 
         content-type: application/json
-    body:
-        { query: { course: course_name, term: term_number, prof: professor_name } }
+    body: { query: { course: course_name, term: term_number, prof: firstname<space>lastname  } }
+        where course_name and term_number don't contain any white space
+        
+    Sample query using HTML5 fetch API:
+    
+    fetch('http://localhost:5000/api/searchby', {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        mode: 'cors',
+        body: JSON.stringify({ query: { course: "cop4610" } })
+    }).then(resp => {
+        resp.json().then(data => {
+            console.log(data);
+        })
+    })
+    
+    Using professor and course:
+    
+    fetch('http://localhost:5000/api/searchby', {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        mode: 'cors',
+        body: JSON.stringify({ query: { course: "cop2210", prof: "masoud" } })
+    }).then(resp => {
+        resp.json().then(data => {
+            console.log(data);
+        })
+    })
     ```    
     If neither course, term or prof fields are passed then the first 100 found records are returned  
     Response:
@@ -89,18 +117,47 @@ To set up our server with docker after all dependencies have been installed foll
     "records": 1,
     "message": "Success",
     ```
-    TODO:
-    Create comparable function for terms (Fall, Spring, Summer)
-* **store comments**
-
-    ```
-    Store all comments related to a class in an Array under the class.
-    ```
+    
 * **authenticate user**
+    ```
+    POST /api/login
+    headers:  content-type: application/json
+    body: { user: {username: "", password: "" } }
+    ```
+    
 * **add user**
+    ```
+    POST /api/adduser
+    headers:  content-type: application/json
+    body: { user: {username: "", password: "" } }
+    ```
+    
+* **find user**
+    ```
+    POST /api/finduser
+    headers:  content-type: application/json
+    body: { user: {username: "", password: "" } }
+    ```
+    
 * **delete user**
-* **token barrier**
+    ```
+    POST /api/deleteuser
+    headers:  content-type: application/json
+    body: { user: {username: ""} }
+    ```
+* **Store comments**
+    ```
+    POST /api/addcomment
+    headers:  content-type: application/json
+    body: { comment: {username: "", body: "", id: ""} }
+    ```
 
-    ```
-    Users should not be allowed to use the API without being logged in.
-    ```
+
+
+## TODO:
+     Users should not be allowed to use the API without being logged in.
+* **Implement ORM framework library**
+
+     In order to keep the data embedded model consistentin mongo let's implement ORM posibly using
+     **Humongolus** https://github.com/entone/Humongolus
+    
