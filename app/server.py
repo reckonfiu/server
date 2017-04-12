@@ -115,26 +115,28 @@ def find_user():
 @app.route('/api/adduser', methods=["POST"])
 def add_user():
     params = request.get_json(force=True).get('user')
+    username = params.get("username")
+    password = params.get("password")
     if params is None:
         return response(400, "Error: Bad Request")
-    elif params.get("username") is None:
+    elif username is None:
         return response(404, "Error: Missing username")
-    elif params.get("password") is None:
+    elif password is None:
         return response(404, "Error: Missing password")
 
-    user = db_users.users.find_one({'username': params.get("username")})
+    user = db_users.users.find_one({'username': username})
     if user:
-        return response(409, "Error: " + params.get("username") + " already exists")
+        return response(409, "Error: " + username + " already exists")
     else:  # User not found
         # Determine if legal password
-        valid_pass, msg = is_valid_password(params.get("password"))
+        valid_pass, msg = is_valid_password(password)
 
-        if valid_pass:
-            hash_password = hash_pass(params.get("password"))
-            new_user = {'username': params.get("username"), 'password': hash_password}
+        if valid_pass and is_valid_username(username):
+            hash_password = hash_pass(password)
+            new_user = {'username': username, 'password': hash_password}
             # Add to userdb
             db_users.users.insert(new_user)
-            return response(201, "User: " + params.get("username") + " has been created")
+            return response(201, "User: " + username + " has been created")
         else:
             return response(400, "Error: Invalid Password: " + msg)
 
@@ -150,6 +152,10 @@ def is_valid_password(password):
     else:
         return True, "Password OK"
 
+# check if username is valid
+def is_valid_username(username):
+    user = username.split("@")
+    return user[1] == "fiu.edu" and user[0] and len(user) == 2
 
 # Login user, authorization
 @app.route('/api/login', methods=["POST"])
