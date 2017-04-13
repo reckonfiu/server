@@ -63,12 +63,12 @@ def require_token():
         body = request.get_json(force=True)
         token = body.get("token")
         user = body.get("user")
-        username = user["username"]
         if request.endpoint == "login" or request.endpoint == "add_user":
             r_token = False
-        if body is None or username is None:
+        if body is None or user is None:
             return response(400, "Error: Bad Request")
-        if user is None or (r_token and not username in session):
+        username = user["username"]            
+        if username is None or (r_token and not username in session):
             return response(400, "Not logged in")
         if r_token and (token is None or not is_valid_token(json_util.loads(token), username) or str(json_util.loads(token)) != str(session[username]) ):
             return response(400, "invalid token")
