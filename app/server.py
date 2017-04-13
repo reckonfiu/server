@@ -66,7 +66,7 @@ def require_token():
         print(user)        
         if body is None:
             return response(400, "Error: Bad Request")
-        if user is None or (not username in session and request.endpoint != "login"):
+        if user is None or not (username in session or request.endpoint == "login"):
             return response(400, "Not logged in")
         if token is None or not (is_valid_token(token) and session[username] == token ):
             return response(400, "invalid token")
