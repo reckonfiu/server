@@ -3,8 +3,8 @@ from flask import Flask, json, request, session
 from pymongo import MongoClient
 from flask_cors import CORS
 from bson.objectid import ObjectId
+from bson import json_util
 from datetime import datetime
-
 
 app = Flask(__name__)
 CORS(app)
@@ -58,18 +58,21 @@ def autoResponse(function):
 
 @app.before_request
 def require_token():
+    r_token = True
     if request.method == "POST" :
         body = request.get_json(force=True)
         token = body.get("token")
         user = body.get("user")
         username = user["username"]
-        print(user)        
-        if body is None:
+        if request.endpoint == "login" or request.endpoint == "add_user":
+            r_token = False
+        if body is None or username is None:
             return response(400, "Error: Bad Request")
-        if user is None or (not username in session and request.endpoint != "login"):
+        if user is None or (r_token and not username in session):
             return response(400, "Not logged in")
-        if token is None or not (is_valid_token(token) and session[username] == token ):
+        if r_token and (token is None or not is_valid_token(json_util.loads(token), username) or str(json_util.loads(token)) != str(session[username]) ):
             return response(400, "invalid token")
+
 
 @app.route("/")
 def initApp():
@@ -128,19 +131,24 @@ def add_user():
     username = params.get("username")
     password = params.get("password")
     user = db_users.users.find_one({"username": username})
+    
+    if password is None:
+        return response(400, "bad request")
     if user:
         return response(409, "Error: " + username + " already exists")
 
     # Determine if legal password
     valid_pass, msg = is_valid_password(password)
+    if not is_valid_username(username):
+        return response(400, "Invalid username")
+    if not valid_pass:
+        return response(400, "Error: Invalid Password: " + msg)
 
-    if valid_pass and is_valid_username(username):
-        hash_password = hash_pass(password)
-        new_user = {"username": username, "password": hash_password}
-        # Add to userdb
-        db_users.users.insert(new_user)
-        return response(201, "User: " + username + " has been created")
-    return response(400, "Error: Invalid Password: " + msg)
+    hash_password = hash_pass(password)
+    new_user = {"username": username, "password": hash_password}
+    # Add to userdb
+    db_users.users.insert(new_user)
+    return response(201, "User: " + username + " has been created")
 
 # Delete a user document in userdb
 @app.route("/api/deleteuser", methods=["POST"])
@@ -165,7 +173,7 @@ def is_valid_password(password):
 # check if username is valid
 def is_valid_username(username):
     user = username.split("@")
-    return user[1] == "fiu.edu" and user[0] and len(user) == 2
+    return len(user) == 2 and user[0]  and user[1] == "fiu.edu"
 
 # Login user, authorization
 @app.route("/api/login", methods=["POST"])
@@ -186,7 +194,7 @@ def login():
     token = generate_token(username)
     # Store user in session
     session[username] = token
-    return response(200, username + " has logged in", {"username": username, "token": token})
+    return response(200, username + " has logged in", {"username": username, "token": json_util.dumps(token)})
         
 
 
