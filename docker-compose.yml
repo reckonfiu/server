@@ -12,6 +12,7 @@ services:
             - "5000:5000"
         volumes:
             - .:/reconfiu
+            - /etc/localtime:/etc/localtime            
         links:
             - db
 
