@@ -27,16 +27,8 @@ EXP_TIME = 86400 # 1 day
 # Secret key for JWT
 SECRET_KEY = "RECON_FIU_CEN_4010"  # TODO: Should be Randomized and sent to Client Browser
 
-# creates general response 
-def response(status_code, message, data=None):
-    return json.jsonify(
-        status = status_code,
-        message = message,
-        data = data
-    )
-
-# creates response with data
-def autoResponse(function):
+# creates autoResponse with data
+def autoResponse(function=lambda: dict(), status_code=200, message="Success"):
     try:
         result = function()
     except (BaseException, RuntimeError) as e:
@@ -49,8 +41,8 @@ def autoResponse(function):
         client.close()
         return response
     return json.jsonify(
-        status=200,
-        message="Success",
+        status=status_code,
+        message=message,
         data=result,
         records=len(result)
     )
@@ -66,12 +58,12 @@ def require_token():
         if request.endpoint == "login" or request.endpoint == "add_user":
             r_token = False
         if body is None or user is None:
-            return response(400, "Error: Bad Request")
+            return autoResponse(status_code=400, message="Error: Bad Request")
         username = user["username"]            
         if username is None or (r_token and not username in session):
-            return response(400, "Not logged in")
+            return autoResponse(status_code=400, message="Not logged in")
         if r_token and (token is None or not is_valid_token(json_util.loads(token), username) or str(json_util.loads(token)) != str(session[username]) ):
-            return response(400, "invalid token")
+            return autoResponse(status_code=400, message="invalid token")
 
 
 @app.route("/")
@@ -82,7 +74,7 @@ def initApp():
 @app.route("/api/getall/<int:limit>", methods=["POST", "GET"])
 def allRecords(limit=1000):
     cursor = db.courses.find().limit(limit)
-    return autoResponse(lambda: utils.toArray(cursor) )
+    return autoResponse(lambda: utils.toArray(cursor))
 
 # performs a search by depending on what criteri is passed
 # if no criteria is passed the returns first 1000 records
@@ -120,8 +112,8 @@ def find_user():
     username =  params.get("username")
     user = db_users.users.find_one({"username": username})
     if user is None:
-        return response(404, "Error: " + username + " not found")
-    return response(200, "User found", {"username": user["username"]})
+        return autoResponse(status_code=404, message="Error: " + username + " not found")
+    return autoResponse(function=lambda: {"username": user["username"]}, message="User found")
 
 
 # Create a user document in userdb
@@ -133,22 +125,22 @@ def add_user():
     user = db_users.users.find_one({"username": username})
     
     if password is None:
-        return response(400, "bad request")
+        return autoResponse(status_code=400, message="bad request")
     if user:
-        return response(409, "Error: " + username + " already exists")
+        return autoResponse(status_code=409, message="Error: " + username + " already exists")
 
     # Determine if legal password
     valid_pass, msg = is_valid_password(password)
     if not is_valid_username(username):
-        return response(400, "Invalid username")
+        return autoResponse(status_code=400, message="Invalid username")
     if not valid_pass:
-        return response(400, "Error: Invalid Password: " + msg)
+        return autoResponse(status_code=400, message="Error: Invalid Password: " + msg)
 
     hash_password = hash_pass(password)
     new_user = {"username": username, "password": hash_password}
     # Add to userdb
     db_users.users.insert(new_user)
-    return response(201, "User: " + username + " has been created")
+    return autoResponse(status_code=201, message="User: " + username + " has been created")
 
 # Delete a user document in userdb
 @app.route("/api/deleteuser", methods=["POST"])
@@ -157,8 +149,8 @@ def delete_user():
     username = params.get("username")
     user = db_users.users.remove({"username": username})
     if user:
-        return response(200, "Username: " + username + " has been deleted.")
-    return response(409, username + " not found")
+        return autoResponse(status_code=200, message="Username: " + username + " has been deleted.")
+    return autoResponse(status_code=409, message=username + " not found")
 
 # Check if password is valid
 def is_valid_password(password):
@@ -173,7 +165,7 @@ def is_valid_password(password):
 # check if username is valid
 def is_valid_username(username):
     user = username.split("@")
-    return len(user) == 2 and user[0]  and user[1] == "fiu.edu"
+    return len(user) == 2 and user[0] and user[1] == "fiu.edu"
 
 # Login user, authorization
 @app.route("/api/login", methods=["POST"])
@@ -184,17 +176,17 @@ def login():
     
     user = db_users.users.find_one({"username": username})
     if user is None:
-        return response(404,  username + " not found")
+        return autoResponse(status_code=404, message=username + " not found")
     if username in session:  # User already logged in
-        return response(409,  username + " is already logged in")   
+        return autoResponse(status_code=409,  message=username + " is already logged in")   
     # Determine if password is correct
     if hash_pass(password) != user["password"]:
-        return response(403, "Error: Given password does not match with " + username)
+        return autoResponse(status_code=403, message="Error: Given password does not match with " + username)
     
     token = generate_token(username)
     # Store user in session
     session[username] = token
-    return response(200, username + " has logged in", {"username": username, "token": json_util.dumps(token)})
+    return autoResponse(function=lambda: {"username": username, "token": json_util.dumps(token)}, message=username + " has logged in")
         
 
 
@@ -206,7 +198,7 @@ def logout():
     username = params.get("username")   
     # Remove user from session
     session.pop(username, None)
-    return response(200, username + " has been logged out")
+    return autoResponse(message=username + " has been logged out")
            
 
 # Adds a comment to the database
@@ -217,12 +209,12 @@ def add_comment():
     username = params.get("username") or "Anonymous"
     body = params.get("body")
     if body.strip() is None:
-        return response(400, "Error: Bad Request")
+        return autoResponse(status_code=400, message="Error: Bad Request")
     
     db.courses.update({"_id": ObjectId(params.get("id"))},\
         {"$push": {"comments": {"username": username,\
         "body": params.get("body"), "time": datetime.now().strftime("%m-%d-%Y %H:%M:%S")}}})
-    return response(200, "Comment has been added")
+    return autoResponse(message="Comment has been added")
 
 # Hash a given password using the sha1 hash function
 def hash_pass(password):
