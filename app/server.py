@@ -66,7 +66,7 @@ def require_token():
         print(user)        
         if body is None:
             return response(400, "Error: Bad Request")
-        if user is None or (not username in session and not request.endpoint == "login"):
+        if user is None or (not username in session and request.endpoint != "login"):
             return response(400, "Not logged in")
         if token is None or not (is_valid_token(token) and session[username] == token ):
             return response(400, "invalid token")
@@ -180,7 +180,7 @@ def login():
     if username in session:  # User already logged in
         return response(409,  username + " is already logged in")   
     # Determine if password is correct
-    if hash_pass(params.get("password")) != user["password"]:
+    if hash_pass(password) != user["password"]:
         return response(403, "Error: Given password does not match with " + username)
     
     token = generate_token(username)
