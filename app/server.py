@@ -1,5 +1,5 @@
 import os, utils, re, hashlib, time, jwt
-from flask import Flask, json, request, session
+from flask import Flask, json, request
 from pymongo import MongoClient
 from flask_cors import CORS
 from bson.objectid import ObjectId
@@ -26,7 +26,7 @@ ISSUER = "reconFIU_server"
 EXP_TIME = 86400 # 1 day
 # Secret key for JWT
 SECRET_KEY = "RECON_FIU_CEN_4010"  # TODO: Should be Randomized and sent to Client Browser
-
+_session = {}
 # creates autoResponse with data
 def autoResponse(function=lambda: dict(), status_code=200, message="Success"):
     try:
@@ -39,18 +39,19 @@ def autoResponse(function=lambda: dict(), status_code=200, message="Success"):
             records=0
         )
         client.close()
-        return response
+        return response, status_code
     return json.jsonify(
         status=status_code,
         message=message,
         data=result,
         records=len(result)
-    )
+    ), status_code
 
 
 @app.before_request
 def require_token():
     r_token = True
+    global _session
     if request.method == "POST" :
         body = request.get_json(force=True)
         token = body.get("token")
@@ -60,9 +61,9 @@ def require_token():
         if body is None or user is None:
             return autoResponse(status_code=400, message="Error: Bad Request")
         username = user["username"]            
-        if username is None or (r_token and not username in session):
+        if username is None or (r_token and not username in _session):
             return autoResponse(status_code=400, message="Not logged in")
-        if r_token and (token is None or not is_valid_token(json_util.loads(token), username) or str(json_util.loads(token)) != str(session[username]) ):
+        if r_token and (token is None or not is_valid_token(json_util.loads(token), username)):
             return autoResponse(status_code=400, message="invalid token")
 
 
@@ -170,22 +171,22 @@ def is_valid_username(username):
 # Login user, authorization
 @app.route("/api/login", methods=["POST"])
 def login():
+    global _session
     params = request.get_json(force=True).get("user")
     username = params.get("username")
     password = params.get("password")
-    
     user = db_users.users.find_one({"username": username})
     if user is None:
         return autoResponse(status_code=404, message=username + " not found")
-    if username in session:  # User already logged in
+    if username in _session:  # User already logged in
         return autoResponse(status_code=409,  message=username + " is already logged in")   
     # Determine if password is correct
     if hash_pass(password) != user["password"]:
         return autoResponse(status_code=403, message="Error: Given password does not match with " + username)
     
     token = generate_token(username)
-    # Store user in session
-    session[username] = token
+    # Store user in _session
+    _session[username] = username
     return autoResponse(function=lambda: {"username": username, "token": json_util.dumps(token)}, message=username + " has logged in")
         
 
@@ -193,11 +194,12 @@ def login():
 # Logout user
 @app.route("/api/logout", methods=["POST"])
 def logout():
+    global _session
     # Receive username, token
     params = request.get_json(force=True).get("user")
     username = params.get("username")   
-    # Remove user from session
-    session.pop(username, None)
+    # Remove user from _session
+    _session.pop(username, None)
     return autoResponse(message=username + " has been logged out")
            
 
@@ -205,15 +207,16 @@ def logout():
 # Needs username, comment body, and course id
 @app.route("/api/addcomment", methods=["POST"])
 def add_comment():
-    params = request.get_json(force=True).get("comment")
+    params = request.get_json(force=True)
     username = params.get("username") or "Anonymous"
     body = params.get("body")
-    if body.strip() is None:
+    _id = params.get("id")
+    if body.strip() is None or _id is None:
         return autoResponse(status_code=400, message="Error: Bad Request")
     
-    db.courses.update({"_id": ObjectId(params.get("id"))},\
+    db.courses.update({"_id": ObjectId(_id)},\
         {"$push": {"comments": {"username": username,\
-        "body": params.get("body"), "time": datetime.now().strftime("%m-%d-%Y %H:%M:%S")}}})
+        "body": body, "time": datetime.now().strftime("%m-%d-%Y %H:%M:%S")}}})
     return autoResponse(message="Comment has been added")
 
 # Hash a given password using the sha1 hash function
@@ -246,7 +249,7 @@ def is_valid_token(token, username):
     else:
         return True
 
+
 if __name__ == "__main__":
-    # Secret key for sessions
-    app.secret_key = os.urandom(24)
+    # Secret key for _sessions
     app.run(host="0.0.0.0", debug=True)
