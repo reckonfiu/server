@@ -59,7 +59,7 @@ def require_token():
         if request.endpoint == "login" or request.endpoint == "add_user":
             r_token = False
         if body is None or user is None:
-            return autoResponse(status_code=400, message="Error: Bad Request")
+            return autoResponse(status_code=400, message="Bad Request")
         username = user["username"]            
         if username is None or (r_token and not username in _session):
             return autoResponse(status_code=400, message="Not logged in")
@@ -83,25 +83,27 @@ def allRecords(limit=1000):
 def searchBy():
     params = request.get_json(force=True).get("query")
     if params is None:
-        return allRecords()
+        return allRecords(limit=100)
     course =  params.get("course")
     term = params.get("term")
     prof =  params.get("prof")
+    limit = params.get("limit") or 100
     match = {}
     if "course" in params and course:
         match["course.number"] = { "$regex" : re.compile(pattern=course, flags=re.IGNORECASE) }
-    if "term" in params and term:
+    if "term" in params and term and term != "All":
         match["term.term"] = term
     if "prof" in params and prof:
         match["instructor.name"] = { "$in" : list(map(lambda x : re.compile(pattern=x, flags=re.IGNORECASE), prof.split() ))  }
     
     pipeline_query[0]["$match"] = { "$and": [match] }
+    pipeline_query[1]["$limit"] = limit
     cursor = db.courses.aggregate(pipeline_query)
     return autoResponse(lambda: utils.toArray(cursor))
 
 pipeline_query = [
   { "$match": {} },
-  { "$limit": 10000 },
+  { "$limit": 100 },
   { "$sort": { "date": 1, "instructor.name": 1 } }
 ] 
 
@@ -113,7 +115,7 @@ def find_user():
     username =  params.get("username")
     user = db_users.users.find_one({"username": username})
     if user is None:
-        return autoResponse(status_code=404, message="Error: " + username + " not found")
+        return autoResponse(status_code=404, message=username + " not found")
     return autoResponse(function=lambda: {"username": user["username"]}, message="User found")
 
 
@@ -128,14 +130,14 @@ def add_user():
     if password is None:
         return autoResponse(status_code=400, message="bad request")
     if user:
-        return autoResponse(status_code=409, message="Error: " + username + " already exists")
+        return autoResponse(status_code=409, message=username + " already exists")
 
     # Determine if legal password
     valid_pass, msg = is_valid_password(password)
     if not is_valid_username(username):
         return autoResponse(status_code=400, message="Invalid username")
     if not valid_pass:
-        return autoResponse(status_code=400, message="Error: Invalid Password: " + msg)
+        return autoResponse(status_code=400, message="Invalid Password: " + msg)
 
     hash_password = hash_pass(password)
     new_user = {"username": username, "password": hash_password}
@@ -166,7 +168,7 @@ def is_valid_password(password):
 # check if username is valid
 def is_valid_username(username):
     user = username.split("@")
-    return len(user) == 2 and user[0] and user[1] == "fiu.edu"
+    return len(user) == 2 and user[0] and len(user[0]) == 8 and user[1] == "fiu.edu"
 
 # Login user, authorization
 @app.route("/api/login", methods=["POST"])
@@ -182,7 +184,7 @@ def login():
         return autoResponse(status_code=409,  message=username + " is already logged in")   
     # Determine if password is correct
     if hash_pass(password) != user["password"]:
-        return autoResponse(status_code=403, message="Error: Given password does not match with " + username)
+        return autoResponse(status_code=403, message="Given password does not match with " + username)
     
     token = generate_token(username)
     # Store user in _session
@@ -212,7 +214,7 @@ def add_comment():
     body = params.get("body")
     _id = params.get("id")
     if body.strip() is None or _id is None:
-        return autoResponse(status_code=400, message="Error: Bad Request")
+        return autoResponse(status_code=400, message="Bad Request")
     
     db.courses.update({"_id": ObjectId(_id)},\
         {"$push": {"comments": {"username": username,\
