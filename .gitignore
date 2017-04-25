@@ -1,3 +1,4 @@
 .vscode/
 mongobackups/
 __pycache__/
+server.txt
