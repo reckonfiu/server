@@ -1,7 +1,11 @@
 version: "2"
 services:
     db:
-        image: mongo:3.0.14
+        image: mongo:3.4.2
+        environment:
+            # enter credentials here
+            - MONGO_INITDB_ROOT_USERNAME
+            - MONGO_INITDB_ROOT_PASSWORD7
         volumes:
             - /data/db:/data/db
         ports:

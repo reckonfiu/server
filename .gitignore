@@ -2,3 +2,4 @@
 mongobackups/
 __pycache__/
 server.txt
+config.py

@@ -1,0 +1,2 @@
+mongouser = "enterusername"
+mongopassword = "enterpassword"

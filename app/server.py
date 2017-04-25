@@ -5,6 +5,7 @@ from flask_cors import CORS
 from bson.objectid import ObjectId
 from bson import json_util
 from datetime import datetime
+import config
 
 app = Flask(__name__)
 CORS(app)
@@ -14,6 +15,7 @@ client = MongoClient(
     "db",
     27017)
 
+client.admin.authenticate(config.mongouser, config.mongopassword)
 # databases
 db = client.fiudb
 db_users = client.userdb
