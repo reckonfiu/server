@@ -145,7 +145,7 @@ def add_user():
     new_user = {"username": username, "password": hash_password}
     # Add to userdb
     db_users.users.insert(new_user)
-    return autoResponse(status_code=201, message="User: " + username + " has been created")
+    return autoResponse(status_code=201, message=username + " has been created")
 
 # Delete a user document in userdb
 @app.route("/api/deleteuser", methods=["POST"])
